@@ -12,9 +12,22 @@ app.listen(PORT, HOST, () => {
 
 // database config
 const mongoose = require('mongoose');
-
 async function main() {
     await mongoose.connect(process.env.MONGO_URI);
 }
 main().then(() => console.log(`[connected] database connected`));
 main().catch((err) => console.error(err));
+
+//cors config
+const cors = require('cors');
+app.use(cors({
+    "origin": "http://localhost:4200",
+    "methods": "GET,HEAD,POST,PUT,PATCH,DELETE",
+    "preflightContinue": true,
+    "optionsSuccessStatus": 204
+}))
+
+// endpoint connections
+const user_route = require('./modules/user/user_route');
+app.use(express.json());
+app.use('/api/v1', user_route);
