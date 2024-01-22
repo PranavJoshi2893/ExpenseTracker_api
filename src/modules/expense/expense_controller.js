@@ -22,6 +22,17 @@ async function addEarning(req, res) {
     }
 }
 
+async function updateData(req, res) {
+    try {
+        const id = req.params.id;
+        await Expense.findByIdAndUpdate({ _id: id }, req.body);
+        return res.status(200).json({ message: "Data Updated" })
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+}
+
 async function deleteEntry(req, res) {
     try {
         const id = req.params.id;
@@ -46,6 +57,7 @@ async function getAllData(req, res) {
 module.exports = {
     addExpense,
     addEarning,
+    updateData,
     deleteEntry,
     getAllData
 }

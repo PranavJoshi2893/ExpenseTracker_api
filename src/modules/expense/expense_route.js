@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { addExpense, addEarning, deleteEntry, getAllData } = require('./expense_controller');
+const { addExpense, addEarning, updateData, deleteEntry, getAllData } = require('./expense_controller');
 
 
 router
@@ -9,6 +9,10 @@ router
 router
     .route('/earning')
     .post(addEarning)
+
+router
+    .route('/update/:id')
+    .patch(updateData)
 
 router
     .route('/delete/:id')
