@@ -29,5 +29,7 @@ app.use(cors({
 
 // endpoint connections
 const user_route = require('./modules/user/user_route');
+const expense_route = require('./modules/expense/expense_route');
 app.use(express.json());
 app.use('/api/v1', user_route);
+app.use('/api/v1', expense_route)
