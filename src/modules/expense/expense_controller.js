@@ -1,56 +1,10 @@
 const Expense = require('./expense_model');
 
-async function addExpense(req, res) {
+async function addExpenseOrEarning (req, res) {
     try {
-        const tempBalance = await Expense.findOne({}).sort({ _id: -1 });
-        if (tempBalance === null) {
-            const newExpense = new Expense({
-                date: req.body.date,
-                details: req.body.details,
-                expense: req.body.expense,
-                balance: 0 - Number(req.body.expense)
-            });
-            await newExpense.save();
-            return res.status(201).json({ message: "New expense added" });
-        }
-
-        const newExpense = new Expense({
-            date: req.body.date,
-            details: req.body.details,
-            expense: req.body.expense,
-            balance: Number(tempBalance.balance) - Number(req.body.expense)
-        });
-
+        const newExpense = new Expense(req.body);
         await newExpense.save();
         return res.status(201).json({ message: "New expense added" });
-    } catch (err) {
-        console.error(err);
-        return res.status(500).json({ message: "Internal server error" });
-    }
-}
-
-async function addEarning(req, res) {
-    try {
-        const tempBalance = await Expense.findOne({}).sort({ _id: -1 });
-        if (tempBalance === null) {
-            const newExpense = new Expense({
-                date: req.body.date,
-                details: req.body.details,
-                earning: req.body.earning,
-                balance: 0 + Number(req.body.earning)
-            });
-            await newExpense.save();
-            return res.status(201).json({ message: "New expense added" });
-        }
-
-        const newExpense = new Expense({
-            date: req.body.date,
-            details: req.body.details,
-            earning: req.body.earning,
-            balance: Number(tempBalance.balance) + Number(req.body.earning)
-        });
-        await newExpense.save();
-        return res.status(201).json({ message: "New earning added" });
     } catch (err) {
         console.error(err);
         return res.status(500).json({ message: "Internal server error" });
@@ -90,8 +44,7 @@ async function getAllData(req, res) {
 }
 
 module.exports = {
-    addExpense,
-    addEarning,
+    addExpenseOrEarning,
     updateData,
     deleteEntry,
     getAllData
